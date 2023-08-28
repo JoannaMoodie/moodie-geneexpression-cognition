@@ -299,6 +299,8 @@ theUKBdata <- data.frame(ID = UKB$ID,
  lh_thk_temporalpole = UKB$lh_temporalpole_thickness/10,
  rh_thk_temporalpole = UKB$rh_temporalpole_thickness/10)
 
+select(theUKBdata, contains("_vol_")
+
 theUKBdata <- merge(theUKBdata, theUKBCogdata[,1:12], by = "ID")
 theUKBdata$g <- as.numeric(GpredictUKB$g)*-1 # so that a higher g means higher general cognitive functioning scores
 
@@ -536,7 +538,7 @@ GpredictLBC <- as.data.frame(GpredictLBC)
 GpredictLBC$g <- as.numeric(GpredictLBC$g)
 GpredictLBC$g <- scale(GpredictLBC$g)
 
-theLBCdata = data.frame(ID = LBC$ID, ageMRI = LBC$AgeMRI/365.24, dontuse = LBC$AgeDays/365.24, lag = (LBC$AgeMRI-LBC$AgeDays), sex = LBC$sex, atrophy = LBC$atrophy, cohort = rep("LBC1936", dim(LBC)[1]), freesurfer = rep("unknown", dim(LBC)[1]), site = rep("LBCsite", dim(LBC)[1]), X = LBC$headposX, Y = LBC$headposY, Z = LBC$headposZ/10, lh_vol_bankssts = LBC$lh_vol_bankssts/1000, lh_vol_caudalanteriorcingulate = LBC$lh_vol_caudalanteriorcingulate/1000, lh_vol_caudalmiddlefrontal = LBC$lh_vol_caudalmiddlefrontal/1000, 
+```theLBCdata = data.frame(ID = LBC$ID, ageMRI = LBC$AgeMRI/365.24, dontuse = LBC$AgeDays/365.24, lag = (LBC$AgeMRI-LBC$AgeDays), sex = LBC$sex, atrophy = LBC$atrophy, cohort = rep("LBC1936", dim(LBC)[1]), freesurfer = rep("unknown", dim(LBC)[1]), site = rep("LBCsite", dim(LBC)[1]), X = LBC$headposX, Y = LBC$headposY, Z = LBC$headposZ/10, lh_vol_bankssts = LBC$lh_vol_bankssts/1000, lh_vol_caudalanteriorcingulate = LBC$lh_vol_caudalanteriorcingulate/1000, lh_vol_caudalmiddlefrontal = LBC$lh_vol_caudalmiddlefrontal/1000, 
  lh_vol_cuneus = LBC$lh_vol_cuneus/1000, lh_vol_entorhinal = LBC$lh_vol_entorhinal/1000, lh_vol_fusiform = LBC$lh_vol_fusiform/1000, lh_vol_inferiorparietal = LBC$lh_vol_inferiorparietal/1000, lh_vol_inferiortemporal = LBC$lh_vol_inferiortemporal/1000, lh_vol_isthmus = LBC$lh_vol_isthmus/1000, lh_vol_lateraloccipital = LBC$lh_vol_lateraloccipital/1000, lh_vol_lateralorbitofrontal = LBC$lh_vol_lateralorbitofrontal/1000, lh_vol_lingual = LBC$lh_vol_lingual/1000, lh_vol_medialorbitofrontal = LBC$lh_vol_medialorbitofrontal/1000, lh_vol_middletemporal = LBC$lh_vol_middletemporal/1000, lh_vol_parahippocampal= LBC$lh_vol_parahippocampal/1000, lh_vol_paracentral= LBC$lh_vol_paracentral/1000, 
  lh_vol_parsopercularis = LBC$lh_vol_parsopercularis/1000, lh_vol_parsorbitalis = LBC$lh_vol_parsorbitalis/1000, 
  lh_vol_parstriangularis = LBC$lh_vol_parstriangularis/1000, lh_vol_pericalcarine = LBC$lh_vol_pericalcarine/1000, 
