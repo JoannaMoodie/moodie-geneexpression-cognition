@@ -11,6 +11,7 @@ Data sources:
 Data sources: 
 - We used French and Paus' Deskian-Killiany cortical regional summary of the Allen Human Brain Atlas data [available here](https://figshare.com/articles/dataset/A_FreeSurfer_view_of_the_cortical_transcriptome_generated_from_the_Allen_Human_Brain_Atlas/1439749). 
 - The validation of components based on different pipelines for summarising the Allen Human Brain Atlas data uses data obtained with [Markello et al's scripts](https://github.com/netneurolab/markello_transcriptome) and the [abagen toolbox](https://github.com/rmarkello/abagen).
+- The cell types were categorized according to [Zeisel et al.'s (2015) paper](https://pubmed.ncbi.nlm.nih.gov/25700174/).
 
 ##  Correlations between _g_ and gene expression profiles
 The cortical regional profiles (for gene expression and _g_) calculated in the previous scripts are correlated. The profiles of both general components (Component 1 and 2 from the PCA) and individual genes after controlling for these components are correlated with _g_-morphometry profiles. 
