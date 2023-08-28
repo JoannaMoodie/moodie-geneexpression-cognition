@@ -1,5 +1,4 @@
 # Script written by Joanna Moodie, May-June 2023. The Desikan-Killiany regional-g associations are found for each cohort: UKB, STRADL and LBC1936, and then meta-analysed. 
-R
 library(lavaan)
 library(tidyverse)
 library(ggplot2)
@@ -21,35 +20,21 @@ return(result)
 }
 
 ######## UKB
-diagnoses <- read.csv('/Cluster_Filespace/Joanna/Core/neuroexclusions_binary.csv', sep = " ")
-diagnosesIDs <- read.csv('/Cluster_Filespace/Joanna/Core/neuroexclusions_IDs_totalsampleJune2023.csv', sep = " ")
-colnames(diagnosesIDs)[1] <- "ID"
 
 
-UKBbrain <- read.csv("") # This file contains the Desikan-Killiany 68 region parcellation values (columns) for participants who took part in MRI imaging in instance 2 (~40,000) 
-UKBcog <- read.csv("", sep = " ") # This file contains cognitive test results from the 11 tests we included to estimate a latent g factor 
-colnames(UKBcog)[1] <- "ID"
-UKB <- merge(UKBcog, UKBbrain, by = "ID", all.y = T)
-
+UKB <- read.csv("") # This file contains demographic information, the Desikan-Killiany 68 region parcellation values (columns) for participants who took part in MRI imaging in instance 2 (~40,000) and the cognitive test results from the 11 tests we included to estimate a latent g factor 
+# prepare cognitive test data
 UKB$cog_trailB_log[which(UKB$cog_trailB_log == 0)] <- NA
 UKB$cog_prosmem[which(UKB$cog_prosmem == 2)] <- 0
 UKB$brokenletters_w2[which(UKB$brokenletters_w2 < 20)] <- NA
 UKB$cog_numeric_memory[which(UKB$cog_numeric_memory == -1)] <- NA
-UKB$cog_pairedAss <- exp(UKB$cog_pairedAss_log)
 
-exclusions <- merge(diagnosesIDs, UKB, by = "ID") 
-dim(exclusions)[1]
-diagnoses <- merge(diagnoses, UKB, by = "ID")[,1:dim(diagnoses)[2]]
-data_plot_all <- data.frame(Diagnosis = colnames(diagnoses)[2:dim(diagnoses)[2]], N = psych::describe(diagnoses[2:dim(diagnoses)[2]])$n, Category = c(rep("Exclusions_anytime", 5), rep("Exclusions_before_2_0", 2), rep("Exclusions_anytime", 30), rep("Exclusions_before_2_0", 11)))
-data_plot_all$Diagnosis <- factor(data_plot_all$Diagnosis, levels = data_plot_all$Diagnosis[order(data_plot_all$N, decreasing = T)])
-ggplot(data_plot_all, aes(x = Diagnosis, y = N, label = N, color = Category, fill = Category)) + geom_bar(stat = "identity", width = .5) + theme_cowplot() + theme(axis.text.x = element_text(angle = 75, hjust = 1, vjust = 1)) + scale_y_continuous(expand = c(0,0), limits = c(0,max(data_plot_all$N)+50)) + geom_text(vjust = -1, size = 3) + xlab("Diagnosis") + ylab("N") +scale_color_manual(values = c("darkblue", "steelblue2"))+scale_fill_manual(values = c("darkblue", "steelblue2"))
-ggsave('/home/jmoodie/Documents/Expression/Scripts_toshare/exclusions.jpeg', bg = "white", height = 7, width = 13)
-UKB <- UKB[-which(UKB$ID %in% diagnosesIDs[,1]),]
+neuroexclusions <- read.csv('UKB_neuroexclusions.csv', sep = " ")
+colnames(neuroexclusions)[1] <- "ID"
+UKB <- UKB[-which(UKB$ID %in% neuroexclusions[,1]),]
 
-
-
-newUKB <- UKB # remove brain outliers > 4
-for (i in 24:length(UKB)) {
+newUKB <- UKB 
+for (i in 24:length(UKB)) { # index the regional brain data columns, and remove outliers for each column
 	j = UKB[,colnames(UKB[i])]
 	j[outliers(j, SD = 4)]=NA
 	newUKB[,i] <- j
@@ -58,59 +43,14 @@ NAcountbeforeOutliers <- sapply(UKB, function(x) sum(is.na(x)))
 NAcountafterOutliers <- sapply(newUKB, function(x) sum(is.na(x)))
 UKB <- newUKB
 
-mean(UKB$ageyears_MRI, na.rm = T)
-sd(UKB$ageyears_MRI, na.rm = T)
-min(UKB$ageyears_MRI, na.rm = T)
-max(UKB$ageyears_MRI, na.rm = T)
-
-length(which(UKB$sex == 1))/length(which(UKB$sex > -1)) # m
-length(which(UKB$sex == 0))/length(which(UKB$sex > -1)) # f
-
-table(UKB$assCtr)
-table(UKB$assCtr)/length(which(UKB$assCtr > 0))[1]
-
-
-
-
 
 # create g scores 
 theUKBCogdata = data.frame(ID = UKB$ID, cog_RT_log = UKB$cog_RT_log, cog_numeric_memory = UKB$cog_numeric_memory, cog_fluid_intelligence = UKB$cog_fluid_intelligence, cog_trailB_log = UKB$cog_trailB_log, cog_matrix_pattern = UKB$cog_matrix_pattern_correct,cog_tower = UKB$cog_tower,cog_digsym = UKB$cog_digsym, cog_pairedAss = UKB$cog_pairedAss, cog_prosmem = UKB$cog_prosmem, cog_pairsmatch_incorrect_log = UKB$cog_pairsmatch_incorrect_log, cog_picturevocab = UKB$picturevocab_w2, ageMRI = UKB$ageyears_MRI/100, sex = UKB$sex)
-par(mfrow = c(1, 1))
-corrplot::corrplot(cor(theUKBCogdata[,2:dim(theUKBCogdata)[2]], use = "complete.obs"), tl.col = "black", order = "hclust", method = "number")
-corrplot::corrplot(abs(cor(theUKBCogdata[,2:dim(theUKBCogdata)[2]], use = "complete.obs")), tl.col = "black", order = "hclust", method = "number")
-par(mfrow = c(3, 5))
-for (i in 2:dim(theUKBCogdata)[2]) {
-hist(theUKBCogdata[,i], main = colnames(theUKBCogdata)[i])
-}
-
-
 theUKBCogdata_models <- theUKBCogdata
-theUKBCogdata_models[,c(8)] <- theUKBCogdata_models[,c(8)]/10
+theUKBCogdata_models[,c(8)] <- theUKBCogdata_models[,c(8)]/10 # allows variances of different cognitive tests to be on similar scales, so that lavaan runs
 theUKBCogdata_models[,c(7)] <- theUKBCogdata_models[,c(7)]/10
 par(mfrow = c(1, 1))
 UKBcogmodel <- 'g =~cog_RT_log +cog_numeric_memory + cog_fluid_intelligence + cog_trailB_log + cog_matrix_pattern + cog_tower + cog_digsym + cog_pairsmatch_incorrect_log +cog_prosmem +cog_pairedAss + cog_picturevocab
-
-
-#cog_picturevocab ~~ cog_fluid_intelligence
-#cog_fluid_intelligence ~~ cog_matrix_pattern 
-#cog_fluid_intelligence ~~ cog_tower
-#cog_fluid_intelligence ~~ cog_trailB_log 
-#cog_matrix_pattern ~~ cog_tower
-#cog_matrix_pattern ~~ cog_trailB_log 
-#cog_RT_log ~~ cog_tower
-#cog_RT_log ~~ cog_digsym
-#cog_RT_log ~~ cog_trailB_log 
-#cog_digsym ~~ cog_trailB_log 
-#cog_prosmem ~~ cog_numeric_memory
-#cog_prosmem ~~ cog_pairedAss 
-#cog_numeric_memory ~~ cog_pairedAss 
-#cog_pairsmatch_incorrect_log ~~ cog_fluid_intelligence  
-#cog_pairsmatch_incorrect_log ~~ cog_matrix_pattern 
-#cog_pairsmatch_incorrect_log ~~ cog_tower 
-#cog_pairsmatch_incorrect_log ~~ cog_trailB_log 
-#cog_pairsmatch_incorrect_log ~~ cog_prosmem
-#cog_pairsmatch_incorrect_log ~~ cog_numeric_memory
-#cog_pairsmatch_incorrect_log ~~ cog_pairedAss 
 cog_RT_log ~ ageMRI + sex
 cog_numeric_memory ~ ageMRI + sex
 cog_fluid_intelligence ~ ageMRI + sex
@@ -123,25 +63,16 @@ cog_prosmem ~ ageMRI + sex
 cog_pairedAss ~ ageMRI + sex
 cog_picturevocab ~ ageMRI + sex
 '
-
 UKBcogfit <- sem(UKBcogmodel, data=theUKBCogdata_models, missing="fiml.x")
 summary(UKBcogfit, fit.measures=TRUE, standardized=T)
 
-
-a <- standardizedSolution(UKBcogfit)[1:11,4]
-b <- a^2
-c <- sum(b)
-varianceexplained <- c/10
-varianceexplained
 GpredictUKB <- lavPredict(UKBcogfit, theUKBCogdata_models)
 GpredictUKB <- cbind(theUKBCogdata$ID, GpredictUKB)
 colnames(GpredictUKB) <- c("ID", "g")
 GpredictUKB <- as.data.frame(GpredictUKB)
 GpredictUKB$g <- scale(GpredictUKB$g)
-ggplot(data = GpredictUKB, aes(x = g)) + geom_density(color = "gold", fill = "gold", alpha = 0.5) + xlab(substitute(paste("Cognitive ability ", italic("z"), " score"))) + ylab("Density") +theme_cowplot() + theme( text = element_text(size=29), axis.text=element_text(size=29), legend.title=element_blank())+theme(legend.position = "none") +scale_x_continuous(breaks = c(-4, -2, 0, 2, 4), limits = c(-4, 4)) + scale_y_continuous(expand = c(0,0))
-
-
-# the desikan-killiany regions have slightly different names between freesurfer versions. Therefore, while this is a long ##write-out, it makes sure that the variable names will match up between cohorts (which is helpful later for entering the results into the meta-analysis etc.). 
+			       
+# the desikan-killiany regions have slightly different names between freesurfer versions. Therefore, while this is a long #write-out, it makes sure that the variable names will match up between cohorts (which is helpful later for entering the results into the meta-analysis etc.). 
 theUKBdata <- data.frame(ID = UKB$ID,
  ageMRI = UKB$ageyears_MRI,
  dontuse = UKB$ageyears_MRI,
@@ -363,12 +294,10 @@ theUKBdata <- data.frame(ID = UKB$ID,
  rh_thk_temporalpole = UKB$rh_temporalpole_thickness/10)
 
 theUKBdata <- merge(theUKBdata, theUKBCogdata[,1:12], by = "ID")
-theUKBdata$g <- as.numeric(GpredictUKB$g)*-1
+theUKBdata$g <- as.numeric(GpredictUKB$g)*-1 # so that a higher g means higher general cognitive functioning scores
 
 UKB_g_regional_results <- matrix(NA, 68*3, 4)
 colnames(UKB_g_regional_results) <- c("region", "beta", "se", "p")
-
-
 index = 0
 for (i in (1+12):((68*3)+12)) {
 index = index + 1
@@ -395,45 +324,25 @@ UKB_g_regional_results[index,1] <- regionname
 UKB_g_regional_results[index,2] <- standardizedSolution(loop_fit)[1,c(4)] 
 UKB_g_regional_results[index,3] <- standardizedSolution(loop_fit)[1,c(5)]
 UKB_g_regional_results[index,4] <- standardizedSolution(loop_fit)[1,c(7)]
-
 }
 
 UKB_g_regional_results <- as.data.frame(UKB_g_regional_results)
 UKB_g_regional_results[,2:4] <- sapply(UKB_g_regional_results[,2:4], as.numeric)
-write.table(UKB_g_regional_results, '/home/jmoodie/Documents/Expression/Scripts_toshare/UKB_g_regional_results.csv', row.names = F)
+write.table(UKB_g_regional_results, 'UKB_g_regional_results.csv', row.names = F)
 UKB_g_regional_results_vol <- UKB_g_regional_results[which(substr(UKB_g_regional_results$region, 4, 6) == "vol"),]
 UKB_g_regional_results_sa <- UKB_g_regional_results[which(substr(UKB_g_regional_results$region, 4, 5) == "sa"),]
 UKB_g_regional_results_thk <- UKB_g_regional_results[which(substr(UKB_g_regional_results$region, 4, 6) == "thk"),]
 
-allbetas <- cbind(UKB_g_regional_results_vol[,2], UKB_g_regional_results_sa[,2], UKB_g_regional_results_thk[,2])
-colnames(allbetas) <- c("vol", "sa", "thk")
-cor(allbetas)
-
 
 ######## STRADL
-STRADL <- read.csv("/home/jmoodie/Documents/Expression/STRADL/data_STRADL_expression.csv", sep = ",")
-x <- read.csv("/home/jmoodie/Documents/Expression/All_together_now/xyz/data_STRADL_xyz.csv", sep = ",", header = T)
-subj <- read.csv("/home/jmoodie/Documents/Expression/All_together_now/xyz/allsubjs_STRADL.txt", sep = ",", header = F)
-y <- cbind(subj, x)
-colnames(y) <- c("ID", "headposX", "headposY", "headposZ")
-
-STRADL <- merge(STRADL, y, by = "ID")
-
-
-outliers <- function(x, SD) {
- a <- which(x> ((SD * sd(x, na.rm=T))+ (mean(x, na.rm=T))))
- b <- which(x< ((-SD * sd(x, na.rm=T))+ (mean(x, na.rm=T))))
- c <- c(a,b)
- result <- c
- return(result)
-}
+STRADL <- read.csv("") # this file contains demographic information, the Desikan-Killiany regional volume, surface area, and thickness, and cognitive test scores for each participant.  
 theSTRADLCogdata = data.frame(eid = STRADL$ID, age = STRADL$AgeFaceToFace, sex = STRADL$Sex, assCtr = STRADL$StudySite, mema = STRADL$mema, memdela = STRADL$memdela, digsym = STRADL$digsym, vftot = STRADL$vftot, mhv = STRADL$mhv, mrtotc = STRADL$mrtotc, logmem = STRADL$mema+STRADL$memdela)
 cogmodel <- 'g =~ digsym + vftot + mhv + mrtotc + logmem 
-#digsym~age+sex
-#vftot ~age+sex
-#mhv~age+sex
-#mrtotc~age+sex
-#logmem~age+sex
+digsym~age+sex
+vftot ~age+sex
+mhv~age+sex
+mrtotc~age+sex
+logmem~age+sex
 '
 
 cogfit <- sem(cogmodel, data = theSTRADLCogdata, missing = "fiml.x")
@@ -444,12 +353,9 @@ GpredictSTRADL <- cbind(STRADL$ID, GpredictSTRADL)
 colnames(GpredictSTRADL) <- c("eid", "g")
 GpredictSTRADL <- as.data.frame(GpredictSTRADL)
 GpredictSTRADL$g <- as.numeric(GpredictSTRADL$g)
-GpredictSTRADL$g <- scale(GpredictSTRADL$g, center = F)
+GpredictSTRADL$g <- scale(GpredictSTRADL$g)
 
-
-ggplot(data = GpredictSTRADL, aes(x = g)) + geom_density(color = "gold", fill = "gold", alpha = 0.5) + xlab(substitute(paste("Scaled cognitive ability score"))) + ylab("Density") +theme_cowplot() + theme( text = element_text(size=29), axis.text=element_text(size=29), legend.title=element_blank()) + theme(legend.position = "none") +scale_x_continuous(breaks = c(-4, -2, 0, 2, 4), limits = c(-4, 4)) + scale_y_continuous(expand = c(0,0))
-
-
+# make sure the regional 
 theSTRADLdata = data.frame(ID = STRADL$ID, ageMRI = STRADL$AgeFaceToFace, dontuse = STRADL$AgeFaceToFace, lag = rep(0, dim(STRADL)[1]), sex = STRADL$Sex, atrophy = STRADL$atrophy, cohort = rep("STRADL", dim(STRADL)[1]), freesurfer = rep("unknown", dim(STRADL)[1]), site = STRADL$StudySite, X = STRADL$headposX, Y = STRADL$headposY, Z = STRADL$headposZ/10, lh_vol_bankssts = STRADL$lh_bankssts_volume/1000,lh_vol_caudalanteriorcingulate = STRADL$lh_caudalanteriorcingulate_volume/1000, lh_vol_caudalmiddlefrontal = STRADL$lh_caudalmiddlefrontal_volume/1000, lh_vol_cuneus = STRADL$lh_cuneus_volume/1000, lh_vol_entorhinal = STRADL$lh_entorhinal_volume/1000, lh_vol_fusiform = STRADL$lh_fusiform_volume/1000, lh_vol_inferiorparietal = STRADL$lh_inferiorparietal_volume/1000, lh_vol_inferiortemporal = STRADL$lh_inferiortemporal_volume/1000, lh_vol_isthmus = STRADL$lh_isthmuscingulate_volume/1000, lh_vol_lateraloccipital = STRADL$lh_lateraloccipital_volume/1000, lh_vol_lateralorbitofrontal = STRADL$lh_lateralorbitofrontal_volume/1000, lh_vol_lingual = STRADL$lh_lingual_volume/1000, lh_vol_medialorbitofrontal = STRADL$lh_medialorbitofrontal_volume/1000, lh_vol_middletemporal = STRADL$lh_middletemporal_volume/1000, lh_vol_parahippocampal= STRADL$lh_parahippocampal_volume/1000, lh_vol_paracentral= STRADL$lh_paracentral_volume/1000, 
 lh_vol_parsopercularis = STRADL$lh_parsopercularis_volume/1000, lh_vol_parsorbitalis = STRADL$lh_parsorbitalis_volume/1000, 
                       lh_vol_parstriangularis = STRADL$lh_parstriangularis_volume/1000, lh_vol_pericalcarine = STRADL$lh_pericalcarine_volume/1000, 
@@ -515,8 +421,7 @@ lh_vol_parsopercularis = STRADL$lh_parsopercularis_volume/1000, lh_vol_parsorbit
                       rh_sa_superiorparietal = STRADL$rh_superiorparietal_area/100, rh_sa_superiortemporal = STRADL$rh_superiortemporal_area/100, 
                       rh_sa_supramarginal = STRADL$rh_supramarginal_area/100, rh_sa_frontalpole = STRADL$rh_frontalpole_area/100, 
                       rh_sa_transversetemporal = STRADL$rh_transversetemporal_area/100, rh_sa_insula = STRADL$rh_insula_area/100, 
-                      rh_thk_bankssts = STRADL$rh_bankssts_thickness*10,
-                      rh_thk_caudalanteriorcingulate = STRADL$rh_caudalanteriorcingulate_thickness*10, rh_thk_caudalmiddlefrontal = STRADL$rh_caudalmiddlefrontal_thickness*10,
+                      rh_thk_bankssts = STRADL$rh_bankssts_thickness*10,    rh_thk_caudalanteriorcingulate = STRADL$rh_caudalanteriorcingulate_thickness*10, rh_thk_caudalmiddlefrontal = STRADL$rh_caudalmiddlefrontal_thickness*10,
                       rh_thk_cuneus = STRADL$rh_cuneus_thickness*10, rh_thk_entorhinal = STRADL$rh_entorhinal_thickness*10, rh_thk_fusiform = STRADL$rh_fusiform_thickness*10, 
                       rh_thk_inferiorparietal = STRADL$rh_inferiorparietal_thickness*10, rh_thk_inferiortemporal = STRADL$rh_inferiortemporal_thickness*10, 
                       rh_thk_isthmus = STRADL$rh_isthmuscingulate_thickness*10, rh_thk_lateraloccipital = STRADL$rh_lateraloccipital_thickness*10, 
@@ -531,7 +436,10 @@ lh_vol_parsopercularis = STRADL$lh_parsopercularis_volume/1000, lh_vol_parsorbit
                       rh_thk_superiorfrontal = STRADL$rh_superiorfrontal_thickness*10, rh_thk_superiorparietal = STRADL$rh_superiorparietal_thickness*10, 
                       rh_thk_superiortemporal = STRADL$rh_superiortemporal_thickness*10, rh_thk_supramarginal = STRADL$rh_supramarginal_thickness*10, 
                       rh_thk_frontalpole = STRADL$rh_frontalpole_thickness*10,
-                      rh_thk_transversetemporal = STRADL$rh_transversetemporal_thickness*10, rh_thk_insula = STRADL$rh_insula_thickness*10, lh_vol_temporalpole = STRADL$lh_temporalpole_volume/1000, rh_vol_temporalpole = STRADL$rh_temporalpole_volume/1000,lh_sa_temporalpole = STRADL$lh_temporalpole_area/100, rh_sa_temporalpole = STRADL$rh_temporalpole_area/100, lh_thk_temporalpole = STRADL$lh_temporalpole_thickness/10,rh_thk_temporalpole = STRADL$rh_temporalpole_thickness/10)
+                      rh_thk_transversetemporal = STRADL$rh_transversetemporal_thickness*10, rh_thk_insula = STRADL$rh_insula_thickness*10, 
+	              lh_vol_temporalpole = STRADL$lh_temporalpole_volume/1000, rh_vol_temporalpole = STRADL$rh_temporalpole_volume/1000,
+		      lh_sa_temporalpole = STRADL$lh_temporalpole_area/100, rh_sa_temporalpole = STRADL$rh_temporalpole_area/100, lh_thk_temporalpole = STRADL$lh_temporalpole_thickness/10,
+		      rh_thk_temporalpole = STRADL$rh_temporalpole_thickness/10)
 
 theSTRADLdata$Gpredict <- as.numeric(GpredictSTRADL$g)
 colnames(theSTRADLdata)[217] <- "g"
@@ -630,7 +538,7 @@ GpredictLBC <- cbind(LBC$ID, GpredictLBC$g)
 colnames(GpredictLBC) <- c("eid", "g")
 GpredictLBC <- as.data.frame(GpredictLBC)
 GpredictLBC$g <- as.numeric(GpredictLBC$g)
-GpredictLBC$g <- scale(GpredictLBC$g, center = F)
+GpredictLBC$g <- scale(GpredictLBC$g)
 
 ggplot(data = GpredictLBC, aes(x = g)) + geom_density(color = "gold", fill = "gold", alpha = 0.5) + xlab("Scaled cognitive ability score") + ylab("Density\n") +theme_cowplot() + theme( text = element_text(size=29), axis.text=element_text(size=29), legend.title=element_blank()) + theme(legend.position = "none") +scale_y_continuous(expand = c(0, 0)) +scale_x_continuous(breaks = c(-4,-2, 0,2,4), limits = c(-4,4))
 
