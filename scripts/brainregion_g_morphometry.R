@@ -623,7 +623,8 @@ rh_sa_transversetemporal = LBC$rh_sa_transversetemporal/100, rh_sa_insula = LBC$
  rh_thk_superiortemporal = LBC$rh_thk_superiortemporal*10, rh_thk_supramarginal = LBC$rh_thk_supramarginal*10, 
  rh_thk_frontalpole = LBC$rh_thk_frontalpole*10, 
  rh_thk_transversetemporal = LBC$rh_thk_transversetemporal*10, rh_thk_insula = LBC$rh_thk_insula*10, lh_vol_temporalpole = LBC$lh_vol_temporalpole/1000, rh_vol_temporalpole = LBC$rh_vol_temporalpole/1000,lh_sa_temporalpole = LBC$lh_sa_temporalpole/100, rh_sa_temporalpole = LBC$rh_sa_temporalpole/100,lh_thk_temporalpole = LBC$lh_thk_temporalpole/10,rh_thk_temporalpole = LBC$rh_thk_temporal/10)
-
+ <details>
+       
 theLBCdata$Gpredict <- as.numeric(GpredictLBC$g)
 colnames(theLBCdata)[217] <- "g"
 
