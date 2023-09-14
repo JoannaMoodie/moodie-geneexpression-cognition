@@ -25,6 +25,5 @@ Data source:
 - The cortical regional profiles (for gene expression and _g_) calculated in the previous scripts are correlated.
 
 ## data
-- UKB_neuroexclusions.csv is a list of UKB IDs that we excluded on the basis of neurological conditions (see manuscript for details).
 - component_loadings.csv is a list of component loadings after varimax rotation for Component 1 and Component 2 (for 8235 genes).
 - regional_profiles.xlsx contains the the regional profiles of the two gene expression components and the regional meta-analysis results for g-morphometry associations. 
