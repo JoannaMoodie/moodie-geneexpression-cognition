@@ -19,7 +19,7 @@ Data sources:
 - The cell types were categorized according to [Zeisel et al.'s (2015) paper](https://pubmed.ncbi.nlm.nih.gov/25700174/).
 
 ###  Correlations between _g_ and gene expression profiles
-Script: brainregion_correlations_g_geneexpression
+Script: brainregion_correlations_g_geneexpression.R
 
 Data source:
 - The cortical regional profiles (for gene expression and _g_) calculated in the previous scripts are correlated.
