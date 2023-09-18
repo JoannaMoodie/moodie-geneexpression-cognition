@@ -18,11 +18,6 @@ Data sources:
 - The validation of components based on different pipelines for summarising the Allen Human Brain Atlas data uses data obtained with [Markello et al's scripts](https://github.com/netneurolab/markello_transcriptome) and the [abagen toolbox](https://github.com/rmarkello/abagen).
 - The cell types were categorized according to [Zeisel et al.'s (2015) paper](https://pubmed.ncbi.nlm.nih.gov/25700174/).
 
-###  Correlations between _g_ and gene expression profiles
-Script: brainregion_correlations_g_geneexpression.R
-
-Data source:
-- The cortical regional profiles (for gene expression and _g_) calculated in the previous scripts are correlated.
 
 ## data
 - component_loadings.csv is a list of component loadings after varimax rotation for Component 1 and Component 2 (for 8235 genes).
