@@ -3,7 +3,7 @@ This repository contains the R scripts that I wrote in support of the preprint "
 
 Please get in touch with me at jmoodie@ed.ac.uk if you have any questions.
 
-## scripts
+## /scripts
 ### Brain regional morphometric profiles of _g_ 
 Script: brainregion_g_morphometry.R
 
@@ -17,7 +17,7 @@ Script: brainregion_geneexpression.R
 - The validation of components based on different pipelines for summarising the Allen Human Brain Atlas data uses data obtained with [Markello et al's scripts](https://github.com/netneurolab/markello_transcriptome) and the [abagen toolbox](https://github.com/rmarkello/abagen).
 - The cell types were categorized according to [Zeisel et al.'s (2015) paper](https://pubmed.ncbi.nlm.nih.gov/25700174/).
 
-## data
+## /data
 - UKB_neurological_exclusion_codes.xlsx is a list of database codes that were used to derive the list of participants to exclude from analysis on the grounds of particular brain-related conditions.
 - component_loadings.csv is a list of component loadings after varimax rotation for Component 1 and Component 2 (for 8235 genes).
 - regional_profiles.xlsx contains the the regional profiles of the two gene expression components and the regional meta-analysis results for g-morphometry associations. 
