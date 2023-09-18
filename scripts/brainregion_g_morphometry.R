@@ -1,4 +1,4 @@
-# Script written by Joanna Moodie, May-June 2023. The Desikan-Killiany regional-g associations are found for each cohort: UKB, STRADL and LBC1936, and then meta-analysed. 
+# The Desikan-Killiany regional-g associations are found for each cohort: UKB, STRADL and LBC1936, and then meta-analysed. 
 library(lavaan)
 library(tidyverse)
 library(ggplot2)
