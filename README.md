@@ -1,7 +1,7 @@
 # moodie-geneexpression-cognition
 This repository contains the R scripts that I wrote in support of the preprint "General and specific patterns of cortical gene expression as spatial correlates of complex cognitive functioning" [available here](https://www.biorxiv.org/content/10.1101/2023.03.16.532915v1). These scripts were run in R version 4.0.2. 
 
-Please get in touch with me at jmoodie@ed.ac.uk if you have any quesitons.
+Please get in touch with me at jmoodie@ed.ac.uk if you have any questions.
 
 ## scripts
 ### Brain regional morphometric profiles of _g_ 
