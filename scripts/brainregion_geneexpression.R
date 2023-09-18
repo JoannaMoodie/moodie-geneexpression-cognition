@@ -1,4 +1,5 @@
-# Script written by Joanna Moodie, July 2023. The gene expression components are calculated and validated, and correlations between gene expressions and g-morphometry profiles are calculated. 
+# The gene expression components are calculated and validated, and correlations between gene expressions and g-morphometry profiles are calculated. 
+R
 library(ggplot2)
 library(caret)
 library(tidyverse)
