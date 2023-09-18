@@ -13,11 +13,9 @@ Data sources:
 ### Brain regional profiles of gene expression
 Script: brainregion_geneexpression.R
 
-Data sources: 
-- We used [French and Paus' 2015](https://figshare.com/articles/dataset/A_FreeSurfer_view_of_the_cortical_transcriptome_generated_from_the_Allen_Human_Brain_Atlas/1439749) Deskian-Killiany cortical regional summary of the Allen Human Brain Atlas data. 
+- We used [French and Paus' 2015](https://figshare.com/articles/dataset/A_FreeSurfer_view_of_the_cortical_transcriptome_generated_from_the_Allen_Human_Brain_Atlas/1439749) Deskian-Killiany cortical regional summary of the Allen Human Brain Atlas data for PCA analysis. 
 - The validation of components based on different pipelines for summarising the Allen Human Brain Atlas data uses data obtained with [Markello et al's scripts](https://github.com/netneurolab/markello_transcriptome) and the [abagen toolbox](https://github.com/rmarkello/abagen).
 - The cell types were categorized according to [Zeisel et al.'s (2015) paper](https://pubmed.ncbi.nlm.nih.gov/25700174/).
-
 
 ## data
 - component_loadings.csv is a list of component loadings after varimax rotation for Component 1 and Component 2 (for 8235 genes).
