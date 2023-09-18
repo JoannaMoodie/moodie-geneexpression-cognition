@@ -371,28 +371,28 @@ for (i in 1:68) {
 loopdata <- rbind(UKB_g_regional_results_sa[i,], STRADL_g_regional_results_sa[i,], LBC_g_regional_results_sa[i,])
 res <- rma(beta, sa_va, data = loopdata, ni = n)
 resmod <- rma(beta, sa_va, mods  =  meanage, data = loopdata, ni = n)
-sa_outcomes[i,1] <- as.numeric(res[17]) # q statistic 
-sa_outcomes[i,2] <- as.numeric(res[18]) # p value for q
-sa_outcomes[i,3] <- as.numeric(res[13]) # I^2
-sa_outcomes[i,3] <- as.numeric(res[9]) # tau^2
-sa_outcomes[i,5] <- as.numeric(res[10]) # setau^2
-sa_outcomes[i,6] <- as.numeric(res[2]) #beta
-sa_outcomes[i,7] <- as.numeric(res[3]) # se
-sa_outcomes[i,8] <- as.numeric(res[4]) # z
-sa_outcomes[i,9] <- as.numeric(res[5]) # p value
+sa_outcomes[i,1] <- as.numeric(res[17]) 
+sa_outcomes[i,2] <- as.numeric(res[18])
+sa_outcomes[i,3] <- as.numeric(res[13]) 
+sa_outcomes[i,3] <- as.numeric(res[9]) 
+sa_outcomes[i,5] <- as.numeric(res[10])
+sa_outcomes[i,6] <- as.numeric(res[2]) 
+sa_outcomes[i,7] <- as.numeric(res[3])
+sa_outcomes[i,8] <- as.numeric(res[4]) 
+sa_outcomes[i,9] <- as.numeric(res[5]) 
 sa_outcomes[i,10] <- loopdata$region[1]
 sa_outcomes[i,11] <- as.numeric(res[14])
 colnames(sa_outcomes) <- c("sa_q", "sa_p_q", "sa_I^2", "sa_tau^2", "sa_setau^2", "sa_beta", "sa_se", "sa_z", "sa_p", "Region", "sa_H^2")
 
-saage_outcomes[i,1] <- as.numeric(resmod[17]) # q statistic 
-saage_outcomes[i,2] <- as.numeric(resmod[18]) # p value for q
-saage_outcomes[i,3] <- as.numeric(resmod[13]) # I^2
-saage_outcomes[i,3] <- as.numeric(resmod[9]) # tau^2
-saage_outcomes[i,5] <- as.numeric(resmod[10]) # setau^2
-saage_outcomes[i,6] <- as.numeric(as.data.frame(resmod[2])[2,1]) #beta
-saage_outcomes[i,7] <- as.numeric(as.data.frame(resmod[3])[2,1])  # se
-saage_outcomes[i,8] <- as.numeric(as.data.frame(resmod[4])[2,1])  # z
-saage_outcomes[i,9] <- as.numeric(as.data.frame(resmod[5])[2,1])  # p value
+saage_outcomes[i,1] <- as.numeric(resmod[17]) 
+saage_outcomes[i,2] <- as.numeric(resmod[18]) 
+saage_outcomes[i,3] <- as.numeric(resmod[13]) 
+saage_outcomes[i,3] <- as.numeric(resmod[9]) 
+saage_outcomes[i,5] <- as.numeric(resmod[10])
+saage_outcomes[i,6] <- as.numeric(as.data.frame(resmod[2])[2,1])
+saage_outcomes[i,7] <- as.numeric(as.data.frame(resmod[3])[2,1])  
+saage_outcomes[i,8] <- as.numeric(as.data.frame(resmod[4])[2,1])  
+saage_outcomes[i,9] <- as.numeric(as.data.frame(resmod[5])[2,1]) 
 saage_outcomes[i,10] <- loopdata$region[1]
 	
 sa_outcomes[i,11] <- as.numeric(res[14])
@@ -416,28 +416,28 @@ for (i in 1:68) {
 loopdata <- rbind(UKB_g_regional_results_thk[i,], STRADL_g_regional_results_thk[i,], LBC_g_regional_results_thk[i,])
 res <- rma(beta, thk_va, data = loopdata, ni = n)
 resmod <- rma(beta, thk_va, mods  =  meanage, data = loopdata, ni = n)
-thk_outcomes[i,1] <- as.numeric(res[17]) # q statistic 
-thk_outcomes[i,2] <- as.numeric(res[18]) # p value for q
-thk_outcomes[i,3] <- as.numeric(res[13]) # I^2
-thk_outcomes[i,3] <- as.numeric(res[9]) # tau^2
-thk_outcomes[i,5] <- as.numeric(res[10]) # setau^2
-thk_outcomes[i,6] <- as.numeric(res[2]) #beta
-thk_outcomes[i,7] <- as.numeric(res[3]) # se
-thk_outcomes[i,8] <- as.numeric(res[4]) # z
-thk_outcomes[i,9] <- as.numeric(res[5]) # p value
+thk_outcomes[i,1] <- as.numeric(res[17]) 
+thk_outcomes[i,2] <- as.numeric(res[18]) 
+thk_outcomes[i,3] <- as.numeric(res[13]) 
+thk_outcomes[i,3] <- as.numeric(res[9]) 
+thk_outcomes[i,5] <- as.numeric(res[10]) 
+thk_outcomes[i,6] <- as.numeric(res[2]) 
+thk_outcomes[i,7] <- as.numeric(res[3]) 
+thk_outcomes[i,8] <- as.numeric(res[4]) 
+thk_outcomes[i,9] <- as.numeric(res[5]) 
 thk_outcomes[i,10] <- loopdata$region[1]
 thk_outcomes[i,11] <- as.numeric(res[14])
 colnames(thk_outcomes) <- c("thk_q", "thk_p_q", "thk_I^2", "thk_tau^2", "thk_setau^2", "thk_beta", "thk_se", "thk_z", "thk_p", "Region", "thk_H^2")
 
-thkage_outcomes[i,1] <- as.numeric(resmod[17]) # q statistic 
-thkage_outcomes[i,2] <- as.numeric(resmod[18]) # p value for q
-thkage_outcomes[i,3] <- as.numeric(resmod[13]) # I^2
-thkage_outcomes[i,3] <- as.numeric(resmod[9]) # tau^2
-thkage_outcomes[i,5] <- as.numeric(resmod[10]) # setau^2
-thkage_outcomes[i,6] <- as.numeric(as.data.frame(resmod[2])[2,1]) #beta
-thkage_outcomes[i,7] <- as.numeric(as.data.frame(resmod[3])[2,1])  # se
-thkage_outcomes[i,8] <- as.numeric(as.data.frame(resmod[4])[2,1])  # z
-thkage_outcomes[i,9] <- as.numeric(as.data.frame(resmod[5])[2,1])  # p value
+thkage_outcomes[i,1] <- as.numeric(resmod[17])
+thkage_outcomes[i,2] <- as.numeric(resmod[18]) 
+thkage_outcomes[i,3] <- as.numeric(resmod[13])
+thkage_outcomes[i,3] <- as.numeric(resmod[9]) 
+thkage_outcomes[i,5] <- as.numeric(resmod[10])
+thkage_outcomes[i,6] <- as.numeric(as.data.frame(resmod[2])[2,1]) 
+thkage_outcomes[i,7] <- as.numeric(as.data.frame(resmod[3])[2,1]) 
+thkage_outcomes[i,8] <- as.numeric(as.data.frame(resmod[4])[2,1]) 
+thkage_outcomes[i,9] <- as.numeric(as.data.frame(resmod[5])[2,1]) 
 thkage_outcomes[i,10] <- loopdata$region[1]
 	
 thk_outcomes[i,11] <- as.numeric(res[14])
