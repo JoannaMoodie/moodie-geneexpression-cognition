@@ -174,7 +174,7 @@ ggsave(filename = "kfold_Allenall.jpeg", bg = "white", width = 7, height = 7)
 
 # external validation -----------------------------------------------------
 # Brainspan external validation
-loadBrainspan <- read_csv("/home/jmoodie/Documents/Expression/Protein/data/BSnew.csv")
+loadBrainspan <- read_csv("BSnew.csv")
 STC <- loadBrainspan %>% dplyr:: select(starts_with("STC"))
 dataBrainspanall <- as.data.frame(apply(STC, 1, median, na.rm = T))
 dataBrainspanall$STC <- as.data.frame(apply(STC, 1, median, na.rm = T))
@@ -259,7 +259,7 @@ colnames(factorcong) <- c("Component 1", "Component 2")
 factorcong$validationset <- "BrainSpan"
 
 # Kang et al. (2011) external validation
-kangdata <-read_csv("/home/jmoodie/Documents/Expression/Protein/data/kangMatrix.csv")
+kangdata <-read_csv("kangMatrix.csv")
 which(a<-!(duplicated(kangdata) | duplicated(kangdata, fromLast = TRUE)) == FALSE)
 OFC <- kangdata %>% dplyr:: select(contains("OFC.L"))
 datakangleft <- as.data.frame(apply(OFC,1,median, nam = T))
@@ -340,7 +340,7 @@ drops <- which(apply(datakangleft, 2, max) - apply(datakangleft, 2, min) > 4)
 datakangleft$GABRQ <- NA
 datakangleft$SLN <-NA
 datakangleft <- datakangleft[,apply(datakangleft, 2, function(x) !any(is.na(x)))]
-kangdata <-read_csv("/home/jmoodie/Documents/Expression/Protein/data/kangMatrix.csv")
+kangdata <-read_csv("kangMatrix.csv")
 OFC <- kangdata %>% dplyr:: select(contains("OFC.R"))
 datakangright <- as.data.frame(apply(OFC,1,median, na.rm = T))
 datakangright$OFC <-  as.data.frame(apply(OFC,1,median, na.rm = T))
@@ -900,7 +900,7 @@ correctedsigthk <- correctedsigthk[which(correctedsigthk$q < .05),]
 dim(correctedsigthk)
 
 
-# which genes are have significant associations with g-volume, g-area AND g-thickness profiles?
+# which genes are have significant associations with g-volume AND g-area AND g-thickness profiles?
 inallthree <- rbind(volumemass,areamass, thickmass)
 inallthree$q <- p.adjust(inallthree$V4, method = "BH")
 backvolumemass <- inallthree[1:8235,]
