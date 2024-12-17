@@ -20,4 +20,6 @@ Data sources:
 ## /data
 - /UKB_neurological_exclusion_codes.xlsx is a list of database codes that were used to derive the list of participants to exclude from analysis on the grounds of particular brain-related conditions.
 - /component_loadings.csv is a list of component loadings after varimax rotation for Component 1 and Component 2 (for 8235 genes).
-- /regional_profiles.xlsx contains the the regional profiles of the two gene expression components and the regional meta-analysis results for g-morphometry associations. 
+- /regional_profiles.xlsx contains the the regional profiles of the two gene expression components and the regional meta-analysis results for g-morphometry associations.
+  
+![image](https://github.com/user-attachments/assets/a5108f92-e724-489d-affd-20760b4d8779)
